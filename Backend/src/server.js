@@ -17,6 +17,11 @@ app.use(cors());
 app.use('/api/todos', todo)
 
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the Todo API');
+});
+
+
 // Connect to the database and start the server
 connectDB().then(() => {
   app.listen(PORT, () => {
