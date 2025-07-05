@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "build": "node src/server.js"
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
+    "mern_stack_todo": "file:..",
     "mongoose": "^8.16.1",
     "nodemon": "^3.1.10"
   }

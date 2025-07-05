@@ -1,0 +1,21 @@
+{
+  "name": "mern_stack_todo",
+  "version": "1.0.0",
+  "description": "A full-stack todo application built with the MERN stack (MongoDB, Express.js, React, Node.js) featuring modern UI design, user authentication, and real-time task management.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix Backend && npm install --prefix Client && npm run build --prefix Client",
+    "start": " npm run start --prefix Backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohamed8eo/Mern_Tode_Master.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohamed8eo/Mern_Tode_Master/issues"
+  },
+  "homepage": "https://github.com/mohamed8eo/Mern_Tode_Master#readme"
+}
