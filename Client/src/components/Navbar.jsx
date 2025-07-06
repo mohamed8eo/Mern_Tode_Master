@@ -12,14 +12,16 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="border-b border-b-[#E5E8EB] py-3 px-10 justify-between flex">
-      <div className='flex gap-4 items-center'>
-        <img
-          src="../../Logo.svg"
-          alt="logo icon"
-        />
-        <h1 className='text-[#0D171C] text-lg font-bold leading-6'>TaskMaster</h1>
-      </div>
+    <nav className="border-b border-b-[#E5E8EB] py-3 px-10 justify-between items-center flex">
+      <Link to="/">
+        <div className='flex gap-4 items-center'>
+          <img
+            src="../../Logo.svg"
+            alt="logo icon"
+          />
+          <h1 className='text-[#0D171C] text-lg font-bold leading-6'>TaskMaster</h1>
+        </div>
+      </Link>
       <div className='flex gap-4 items-center'>
         <ul className='flex items-center gap-2.5 text-[#121417] font-bold transition-all'>
           {navItems.map((item) => (

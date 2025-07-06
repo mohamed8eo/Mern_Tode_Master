@@ -24,7 +24,7 @@ const TodoCart = ({ Todo, setTodo }) => {
         if (!todo.completed) {
           toast.success('Todo marked as completed');
         }
-      }, 2000); // Delay allows icon animation to finish
+      }, 0); // Delay allows icon animation to finish
 
     } catch (error) {
       toast.error('Failed to update todo');
@@ -56,13 +56,13 @@ const TodoCart = ({ Todo, setTodo }) => {
         <button
             onClick={(e) => handleCheckTodo(e, todo._id)}
             className="ml- cursor-pointer"
-          >
-            {todo.completed ? (
-              <CheckCircle2 className="text-green-500 transition-all duration-300" />
-            ) : (
-              <Circle className="text-gray-400 transition-all duration-300" />
-            )}
-          </button>
+            >
+                  {todo.completed ? (
+                    <CheckCircle2 className="text-green-500 transition-all duration-300" />
+                  ) : (
+                    <Circle className="text-gray-400 transition-all duration-300" />
+                  )}
+                </button>
           <Link to={`/todo/${todo._id}`} className="flex-1 flex flex-col">
             <span className={`font-bold text-[16px] ${todo.completed ? 'line-through text-gray-400' : 'text-[#121417]'}`}>
               {todo.title}
