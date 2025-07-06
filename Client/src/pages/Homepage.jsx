@@ -40,7 +40,7 @@ const Homepage = () => {
           />
           <h2 className=" uppercase  text-2xl font-extrabold text-[#121417]">No tasks yet</h2>
           <p className="text-gray-500 max-w-md font-bold">
-            Looks like you haven’t added any tasks. Start by creating your first one!
+            Looks like you haven't added any tasks. Start by creating your first one!
           </p>
           <Link to="/create">
             <button className="bg-[#C9DEED] text-[#121417] px-5 cursor-pointer py-2 rounded-full font-semibold hover:bg-[#b4cfe3] transition">
@@ -55,7 +55,6 @@ const Homepage = () => {
       {Todo.length > 0 && (
         <>
           <div className="h-[80px]" />
-
 
           <div className="fixed bottom-4 right-4 z-50">
             <Link to="/create">
