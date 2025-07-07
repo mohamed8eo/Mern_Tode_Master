@@ -1,10 +1,11 @@
-import { TrashIcon, Tag ,CalendarDays, Briefcase, Heart, Dumbbell, Book, Home, ShoppingCart } from 'lucide-react'
+import { TrashIcon, Tag ,CalendarDays, Briefcase, Heart, Dumbbell, Book, Home, ShoppingCart, EditIcon } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router'
 import toast from "react-hot-toast";
 import api from '../lib/axios'
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { formatDate } from '../lib/utils';
+import { useMediaQuery } from 'react-responsive';
 
 const TodoDetails = () => {
   const categoryStyles = {
@@ -44,7 +45,7 @@ const TodoDetails = () => {
     text: 'text-[#0F62FE]',
   },
 };
-
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [todo, setTodo] = useState(null);
   const [loading, setLoading] = useState(false)
 
@@ -119,10 +120,45 @@ console.log({todo})
               onChange={handleCheck}
               checked={todo?.todo.completed}
             />
-            <h1 className='text-[#121417] font-extrabold text-[40px] leading-[40px]'>{todo?.todo.title || "Loading..."}</h1>
+            <h1 className='text-[#121417] font-extrabold text-[37px] sm:text-[40px] leading-[40px]'>{todo?.todo.title || "Loading..."}</h1>
           </div>
+
           <div className='flex gap-2.5 items-center'>
-              <button
+            {isMobile
+              ? 
+            <div className="flex-none">
+              {/* Mobile  */}
+            <div className="navbar-start">
+              <div className="dropdown">
+                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block h-5 w-5 stroke-current"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path> </svg>
+                </div>
+                <ul
+                  tabIndex={0}
+                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3  p-2 shadow left-[-85px] w-[155px] gap-1.5 ">
+                    <li>
+                      <button
+                        className="btn btn-ghost btn-xs text-error font-bold"
+                        onClick={handleDelete}
+                      >
+                        <TrashIcon className="size-4" />
+                        <span >Delete Task</span>
+                      </button>
+                  </li>
+                  <li >
+                    <Link to={`/edit/${id}`} state={{ from: 'details' }} className=' justify-center' >
+                      <button className="w-full flex items-center  gap-2 cursor-pointer rounded-[12px]  text-[#0F62FE]  transition-colors text-sm font-semibold">
+                        <EditIcon  className="size-4"/>
+                        <span>Edit Task</span>
+                      </button>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            </div>
+              : <>
+                <button
                 className="btn btn-ghost btn-xs text-error"
                 onClick={handleDelete}
               >
@@ -133,6 +169,7 @@ console.log({todo})
               Edit
             </button>
             </Link>
+              </>}
           </div>
         </div>
         {todo?.todo.description && (

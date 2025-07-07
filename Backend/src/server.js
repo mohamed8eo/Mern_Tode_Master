@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { clerkMiddleware } from '@clerk/express'
 import connectDB from './db/todoConnectDB.js';
 import todo from './routes/todo.js';
 import path from 'path';
@@ -19,10 +18,10 @@ app.use(express.json());
 if(process.env.NODE_ENV !== 'production') {
   app.use(cors());
 }
-app.use(cors());
 
 // Routes
 app.use('/api/todos', todo)
+
 
 
 if(process.env.NODE_ENV === 'production') {
@@ -31,6 +30,7 @@ if(process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../../Client/dist/index.html'));
   });
 }
+
 
 // Connect to the database and start the server
 connectDB().then(() => {
