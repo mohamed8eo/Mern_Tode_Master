@@ -4,17 +4,18 @@ import api from "../lib/axios";
 import TodoCart from "../components/TodoCart";
 import { Plus } from 'lucide-react';
 import { Link } from "react-router";
+import { useUser } from '@clerk/clerk-react';
 
 const Homepage = () => {
   const [Todo, setTodo] = useState([]);
   const [IsLoading, setIsLoading] = useState(true);
+  const { user } = useUser();
 
   useEffect(() => {
     const FetchingTodo = async () => {
       try {
-        const res = await api.get('/todos');
+        const res = await api.get('/todos', { params: { clerkId: user?.id } });
         setTodo(res.data);
-        console.log(res.data);
       } catch (error) {
         toast.error('Failed to load todos');
         console.log("Error fetching todos", error);
@@ -22,8 +23,8 @@ const Homepage = () => {
         setIsLoading(false);
       }
     }
-    FetchingTodo();
-  }, []);
+    if (user?.id) FetchingTodo();
+  }, [user]);
 
   return (
     <div className='sm:px-[60px] lg:px-[160px] py-[20px]'>

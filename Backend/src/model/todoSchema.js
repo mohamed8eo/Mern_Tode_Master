@@ -20,6 +20,10 @@ const todoSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true
+    },
+    clerkId: {
+        type: String,
+        required: true
     }
 }, {timestamps: true});
 

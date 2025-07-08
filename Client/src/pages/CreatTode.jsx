@@ -2,6 +2,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 import api from '../lib/axios';
+import { useUser } from '@clerk/clerk-react';
+
 const CreatTode = () => {
 
   const [title, setTitle] = useState("");
@@ -11,6 +13,7 @@ const CreatTode = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate();
+  const { user } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +30,8 @@ const CreatTode = () => {
         title,
         description,
         date,
-        category
+        category,
+        clerkId: user?.id
       });
       navigate('/')
     } catch (error) {

@@ -3,8 +3,12 @@ import api from '../lib/axios';
 import { Link } from 'react-router';
 import { formatDate } from '../lib/utils';
 import { CheckCircle2, Circle, TrashIcon,PenSquareIcon } from 'lucide-react';
+import { useState, useRef } from 'react';
 
 const TodoCart = ({ Todo, setTodo }) => {
+  const [animatingTodoId, setAnimatingTodoId] = useState(null);
+  const sortTimeout = useRef(null);
+
   const handleCheckTodo = async (e, id) => {
     e.stopPropagation(); // Stop from triggering parent link
     e.preventDefault();
@@ -14,23 +18,32 @@ const TodoCart = ({ Todo, setTodo }) => {
       await api.put(`/todos/${id}`, {
         completed: !todo.completed
       });
-
-      // Delay setting state to let animation play
-      setTimeout(() => {
-        const updatedTodo = Todo.map(todo =>
-          todo._id === id ? { ...todo, completed: !todo.completed } : todo
-        );
-        setTodo(updatedTodo);
-        if (!todo.completed) {
-          toast.success('Todo marked as completed');
-        }
-      }, 0); // Delay allows icon animation to finish
-
+      // Update completed status immediately
+      setTodo(prev => prev.map(todo =>
+        todo._id === id ? { ...todo, completed: !todo.completed } : todo
+      ));
+      setAnimatingTodoId(id);
+      // After 200ms, re-sort todos
+      if (sortTimeout.current) clearTimeout(sortTimeout.current);
+      sortTimeout.current = setTimeout(() => {
+        setTodo(prev => {
+          // Sort: incomplete first, then completed, each group sorted by createdAt desc
+          return [...prev].sort((a, b) => {
+            if (a.completed !== b.completed) return a.completed ? 1 : -1;
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
+        });
+        setAnimatingTodoId(null);
+      }, 200);
+      if (!todo.completed) {
+        toast.success('Todo marked as completed');
+      }
     } catch (error) {
       toast.error('Failed to update todo');
       console.log("Error updating todo", error);
     }
   };
+
   const handleDelete = async (id) => {
     try {
       await api.delete(`/todos/${id}`);
@@ -41,9 +54,11 @@ const TodoCart = ({ Todo, setTodo }) => {
       console.log("Error deleting todo", error);
     }
   };
+
+  // Initial sort: incomplete first, then completed, each group sorted by createdAt desc
   const sortedTodos = [...Todo].sort((a, b) => {
     if (a.completed !== b.completed) return a.completed ? 1 : -1;
-    return new Date(a.createdAt) - new Date(b.createdAt);
+    return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
   return (
@@ -51,7 +66,7 @@ const TodoCart = ({ Todo, setTodo }) => {
       {sortedTodos.map((todo) => (
         <div
           key={todo._id}
-          className="w-full bg-white shadow-sm hover:shadow-md transition rounded-xl px-4 py-3 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-gray-50"
+          className={`w-full bg-white shadow-sm hover:shadow-md transition rounded-xl px-4 py-3 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-gray-50 ${animatingTodoId === todo._id ? 'animate-pulse' : ''}`}
         >
         <button
             onClick={(e) => handleCheckTodo(e, todo._id)}
@@ -72,9 +87,9 @@ const TodoCart = ({ Todo, setTodo }) => {
             </span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center flex-col sm:flex-row gap-2">
             {/* Edit Button */}
-            <Link to={`/edit/${todo._id}`} state={{ from: 'home' }} className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#EBEDF2] hover:bg-[#dce0e6] text-sm font-medium text-[#121417] transition">
+            <Link to={`/edit/${todo._id}`} state={{ from: 'home' }} className="flex items-center w-[87px] sm:w-auto justify-center gap-1 px-3 py-1 rounded-full bg-[#EBEDF2] hover:bg-[#dce0e6] text-sm font-medium text-[#121417] transition">
               <PenSquareIcon className="size-4" />
               Edit
             </Link>

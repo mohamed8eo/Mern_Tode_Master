@@ -5,6 +5,8 @@ import connectDB from './db/todoConnectDB.js';
 import todo from './routes/todo.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import userSignin from './routes/userSignin.js'
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +23,7 @@ if(process.env.NODE_ENV !== 'production') {
 
 // Routes
 app.use('/api/todos', todo)
-
+app.use('/api', userSignin)
 
 
 if(process.env.NODE_ENV === 'production') {

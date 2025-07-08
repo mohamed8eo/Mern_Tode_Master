@@ -4,7 +4,9 @@ import Todo from "../model/todoSchema.js";
 
 export const getTodos = async (req, res) => {
   try {
-    const todos = await Todo.find().sort({ CreatedAt: -1 });
+    const { clerkId } = req.query;
+    const filter = clerkId ? { clerkId } : {};
+    const todos = await Todo.find(filter).sort({ CreatedAt: -1 });
     res.status(200).json(todos);
   } catch (error) {
     console.error("Error fetching todos:", error);
@@ -28,12 +30,12 @@ export const getTodoById = async (req, res) => {
 
 export const createTodo = async (req, res) => {
   try {
-    const { title, description, date, category } = req.body;
+    const { title, description, date, category, clerkId } = req.body;
 
-    if (!title) {
-      return res.status(400).json({ message: "Title is required" });
+    if (!title || !clerkId) {
+      return res.status(400).json({ message: "Title and clerkId are required" });
     }
-    const newTodo = new Todo({ title, description, date, category  });
+    const newTodo = new Todo({ title, description, date, category, clerkId });
     await newTodo.save();
     res.status(201).json({ todo: newTodo, message: "Todo created successfully" });
   } catch (error) {

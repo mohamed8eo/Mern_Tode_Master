@@ -6,7 +6,7 @@ import TodoDetails from './pages/TodoDetails'
 import PageNotFound from './pages/PageNotFound'
 import Navbar from './components/Navbar'
 import EditTodoPage from './pages/EditTodoPage'
-
+import { SignedIn, SignedOut, SignInButton } from '@clerk/clerk-react';
 
 const App = () => {
   return (
